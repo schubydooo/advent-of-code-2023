@@ -7,13 +7,55 @@ import (
 	"os"
 	"slices"
 	"strconv"
+	"strings"
 )
 
 var digits = []string{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
 
 func main() {
 	fmt.Println("Welcome to Advent of Code Day 1")
+	solvePart1()
+	solvePart2()
+}
 
+// Part 2 of the puzzle
+func solvePart2() {
+	fmt.Println("Now we need to look at the letters to determine if the number is spelled out")
+	// Import file
+	calibration_values := readFile()
+
+	// Parse each line for 1st and last int
+	final_value := 0
+	for _, value := range calibration_values {
+		og := value
+		value = convertSpelledNumbers(value)
+		first := getFirstNumber(value)
+		second := getSecondNumber(value)
+
+		calibration_val := (first * 10) + second
+		// fmt.Println(value, " --> ", calibration_val)
+		fmt.Println(og, " --> ", value, " --> ", calibration_val)
+		final_value += calibration_val
+	}
+	fmt.Println("Part 2 - Final calibration value: ", final_value)
+}
+
+func convertSpelledNumbers(row string) string {
+	// Preprocess string and convert spelled numbers to number chars
+	row = strings.Replace(row, "one", "1", -1)
+	row = strings.Replace(row, "two", "2", -1)
+	row = strings.Replace(row, "three", "3", -1)
+	row = strings.Replace(row, "four", "4", -1)
+	row = strings.Replace(row, "five", "5", -1)
+	row = strings.Replace(row, "six", "6", -1)
+	row = strings.Replace(row, "seven", "7", -1)
+	row = strings.Replace(row, "eight", "8", -1)
+	row = strings.Replace(row, "nine", "9", -1)
+	return row
+}
+
+// Part 1 of the puzzle
+func solvePart1() {
 	// Import file
 	calibration_values := readFile()
 
@@ -24,11 +66,11 @@ func main() {
 		second := getSecondNumber(value)
 
 		calibration_val := (first * 10) + second
-		fmt.Println(value, " --> ", calibration_val)
+		// fmt.Println(value, " --> ", calibration_val)
 		final_value += calibration_val
 	}
 
-	fmt.Println("Final calibration value: ", final_value)
+	fmt.Println("Part 1 - Final calibration value: ", final_value)
 }
 
 func parseRow(row string) int {
