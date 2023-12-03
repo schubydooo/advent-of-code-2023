@@ -5,29 +5,65 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"slices"
+	"strconv"
 )
 
-func main() {
-    fmt.Println("Welcome to Advent of Code Day 1")
+var digits = []string{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
 
-	// Import file 
+func main() {
+	fmt.Println("Welcome to Advent of Code Day 1")
+
+	// Import file
 	calibration_values := readFile()
 
-	// Parse each line for 1st and last int 
+	// Parse each line for 1st and last int
 	fmt.Println(calibration_values)
+	for _, value := range calibration_values {
+		first := getFirstNumber(value)
+		second := getSecondNumber(value)
+
+		calibration_val := (first * 10) + second
+		fmt.Println(value, " --> ", calibration_val)
+
+	}
 
 	// Sum returned lines
 	// TODO
 
 }
 
-func parseRow(row string) int{
-	return 1
+func parseRow(row string) int {
+	for i := 0; i < len(row); i++ {
+		char := string(row[i])
+		if slices.Contains(digits, char) {
+			i, err := strconv.Atoi(char)
+			if err != nil {
+				panic("Couldn't convert string to int")
+			}
+
+			return i
+		}
+	}
+	fmt.Println("Didn't find an integer on this line: ", row)
+	return 0
 }
 
+func getFirstNumber(row string) int {
+	return parseRow(row)
+}
 
-func findFirstNum(row string) int {
-	return 1
+func getSecondNumber(row string) int {
+	return parseRow(reverse(row))
+}
+
+// https://stackoverflow.com/questions/1752414/how-to-reverse-a-string-in-go
+func reverse(s string) string {
+	r := []rune(s)
+	for i, j := 0, len(r)-1; i < len(r)/2; i, j = i+1, j-1 {
+		r[i], r[j] = r[j], r[i]
+	}
+	return string(r)
 }
 
 func readFile() []string {
@@ -60,10 +96,8 @@ func readFile() []string {
 		}
 
 		data[i] = record[0]
-		i ++
+		i++
 	}
 
 	return data
-
-
 }
