@@ -27,6 +27,9 @@ func solvePart2() {
 	// Parse each line for 1st and last int
 	final_value := 0
 	for _, value := range calibration_values {
+		if value == "" {
+			continue
+		}
 		og := value
 		value = convertSpelledNumbers(value)
 		first := getFirstNumber(value)
@@ -42,15 +45,16 @@ func solvePart2() {
 
 func convertSpelledNumbers(row string) string {
 	// Preprocess string and convert spelled numbers to number chars
-	row = strings.Replace(row, "one", "1", -1)
-	row = strings.Replace(row, "two", "2", -1)
-	row = strings.Replace(row, "three", "3", -1)
-	row = strings.Replace(row, "four", "4", -1)
-	row = strings.Replace(row, "five", "5", -1)
-	row = strings.Replace(row, "six", "6", -1)
-	row = strings.Replace(row, "seven", "7", -1)
-	row = strings.Replace(row, "eight", "8", -1)
-	row = strings.Replace(row, "nine", "9", -1)
+	// hacky approach to replace AND include edge strings to handle: eightwo -> 8wo
+	row = strings.Replace(row, "one", "o1e", -1)
+	row = strings.Replace(row, "two", "t2o", -1)
+	row = strings.Replace(row, "three", "t3e", -1)
+	row = strings.Replace(row, "four", "f4r", -1)
+	row = strings.Replace(row, "five", "f5e", -1)
+	row = strings.Replace(row, "six", "s6x", -1)
+	row = strings.Replace(row, "seven", "s7n", -1)
+	row = strings.Replace(row, "eight", "e8t", -1)
+	row = strings.Replace(row, "nine", "n9e", -1)
 	return row
 }
 
@@ -62,6 +66,9 @@ func solvePart1() {
 	// Parse each line for 1st and last int
 	final_value := 0
 	for _, value := range calibration_values {
+		if value == "" {
+			continue
+		}
 		first := getFirstNumber(value)
 		second := getSecondNumber(value)
 
@@ -85,8 +92,7 @@ func parseRow(row string) int {
 			return i
 		}
 	}
-	fmt.Println("Didn't find an integer on this line: ", row)
-	return 0
+	panic("Didn't find an integer on this line")
 }
 
 func getFirstNumber(row string) int {
