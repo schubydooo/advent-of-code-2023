@@ -18,19 +18,17 @@ func main() {
 	calibration_values := readFile()
 
 	// Parse each line for 1st and last int
-	fmt.Println(calibration_values)
+	final_value := 0
 	for _, value := range calibration_values {
 		first := getFirstNumber(value)
 		second := getSecondNumber(value)
 
 		calibration_val := (first * 10) + second
 		fmt.Println(value, " --> ", calibration_val)
-
+		final_value += calibration_val
 	}
 
-	// Sum returned lines
-	// TODO
-
+	fmt.Println("Final calibration value: ", final_value)
 }
 
 func parseRow(row string) int {
